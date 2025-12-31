@@ -55,7 +55,7 @@ export const getMealPlanDetails = (req, res) => {
   const query = `
     SELECT 
       mp.id, mp.week_start, mp.week_end,
-      m.id as meal_id, m.name as title, m.description as ingredients, m.calories,
+      m.id as meal_id, m.title, m.ingredients, m.calories,
       mpm.day_of_week, mpm.meal_time
     FROM MealPlans mp
     LEFT JOIN MealPlanMeals mpm ON mp.id = mpm.meal_plan_id

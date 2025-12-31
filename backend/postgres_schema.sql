@@ -20,8 +20,8 @@ CREATE TABLE Users (
 CREATE TABLE Meals (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL REFERENCES Users(id) ON DELETE CASCADE,
-    name VARCHAR(255) NOT NULL,
-    description TEXT,
+    title VARCHAR(255) NOT NULL,
+    ingredients TEXT,
     calories INTEGER,
     protein DECIMAL(10,2),
     carbs DECIMAL(10,2),
