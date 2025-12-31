@@ -52,11 +52,11 @@ CREATE TABLE MealPlanMeals (
 
 -- Sample Admin User (password: admin123)
 INSERT INTO Users (name, email, password, role) VALUES 
-('Admin User', 'admin@mealplanner.com', '$2a$10$YourHashedPasswordHere', 'admin');
+('Mo', 'mo@mealplanner.com', '$2a$10$YourHashedPasswordHere', 'admin');
 
 -- Sample Regular User (password: user123)
 INSERT INTO Users (name, email, password, role) VALUES 
-('John Doe', 'john@example.com', '$2a$10$YourHashedPasswordHere', 'user');
+('Mo User', 'mo.user@example.com', '$2a$10$YourHashedPasswordHere', 'user');
 
 -- Sample Meals
 INSERT INTO Meals (title, ingredients, calories, protein, carbs, fats, user_id) VALUES 
