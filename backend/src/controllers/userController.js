@@ -12,10 +12,10 @@ export const signup = (req, res) => {
   }
 
   // Check if user already exists
-  db.query('SELECT * FROM Users WHERE email = $1', [email], async (err, results) => {
+  db.query('SELECT * FROM Users WHERE email = ?', [email], async (err, results) => {
     if (err) return res.status(500).json({ error: 'Database error' });
     
-    if (results.rows.length > 0) {
+    if (results.length > 0) {
       return res.status(400).json({ error: 'Email already registered' });
     }
 
@@ -24,14 +24,14 @@ export const signup = (req, res) => {
 
     // Insert new user
     db.query(
-      'INSERT INTO Users (name, email, password) VALUES ($1, $2, $3) RETURNING id',
+      'INSERT INTO Users (name, email, password) VALUES (?, ?, ?)',
       [name, email, hashedPassword],
       (err, result) => {
         if (err) return res.status(500).json({ error: 'Failed to create user' });
 
         res.status(201).json({ 
           message: 'User registered successfully',
-          userId: result.rows[0].id 
+          userId: result.insertId 
         });
       }
     );
@@ -48,14 +48,14 @@ export const login = (req, res) => {
   }
 
   // Find user by email
-  db.query('SELECT * FROM Users WHERE email = $1', [email], async (err, results) => {
+  db.query('SELECT * FROM Users WHERE email = ?', [email], async (err, results) => {
     if (err) return res.status(500).json({ error: 'Database error' });
     
-    if (results.rows.length === 0) {
+    if (results.length === 0) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    const user = results.rows[0];
+    const user = results[0];
 
     // Check password
     const isMatch = await bcrypt.compare(password, user.password);
@@ -87,14 +87,14 @@ export const login = (req, res) => {
 export const getProfile = (req, res) => {
   const userId = req.user.id;
 
-  db.query('SELECT id, name, email, role, created_at FROM Users WHERE id = $1', [userId], (err, results) => {
+  db.query('SELECT id, name, email, role, created_at FROM Users WHERE id = ?', [userId], (err, results) => {
     if (err) return res.status(500).json({ error: 'Database error' });
     
-    if (results.rows.length === 0) {
+    if (results.length === 0) {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    res.json(results.rows[0]);
+    res.json(results[0]);
   });
 };
 
