@@ -1,6 +1,5 @@
 import db from '../config/db.js';
 
-// Create meal plan
 export const createMealPlan = (req, res) => {
   const { week_start, week_end } = req.body;
   const userId = req.user.id;
@@ -23,7 +22,6 @@ export const createMealPlan = (req, res) => {
   );
 };
 
-// Get all meal plans for user
 export const getMealPlans = (req, res) => {
   const userId = req.user.id;
 
@@ -33,7 +31,6 @@ export const getMealPlans = (req, res) => {
   });
 };
 
-// Add meal to plan
 export const addMealToPlan = (req, res) => {
   const { planId } = req.params;
   const { meal_id, day_of_week, meal_type } = req.body;
@@ -48,7 +45,6 @@ export const addMealToPlan = (req, res) => {
   );
 };
 
-// Get meal plan details with all meals
 export const getMealPlanDetails = (req, res) => {
   const { planId } = req.params;
 
@@ -69,7 +65,6 @@ export const getMealPlanDetails = (req, res) => {
   });
 };
 
-// Delete meal plan
 export const deleteMealPlan = (req, res) => {
   const { planId } = req.params;
 

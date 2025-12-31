@@ -1,11 +1,9 @@
 import db from '../config/db.js';
 
-// Create new meal
 export const createMeal = (req, res) => {
   const { title, ingredients, calories, protein, carbs, fats } = req.body;
   const userId = req.user.id;
 
-  // Simple validation
   if (!title || !ingredients || !calories) {
     return res.status(400).json({ error: 'Title, ingredients, and calories are required' });
   }
@@ -24,7 +22,6 @@ export const createMeal = (req, res) => {
   );
 };
 
-// Get all meals (for current user or all if admin)
 export const getMeals = (req, res) => {
   const userId = req.user.id;
   const isAdmin = req.user.role === 'admin';
@@ -41,7 +38,6 @@ export const getMeals = (req, res) => {
   });
 };
 
-// Get single meal by ID
 export const getMealById = (req, res) => {
   const mealId = req.params.id;
 
@@ -56,13 +52,11 @@ export const getMealById = (req, res) => {
   });
 };
 
-// Update meal
 export const updateMeal = (req, res) => {
   const mealId = req.params.id;
   const { title, ingredients, calories, protein, carbs, fats } = req.body;
   const userId = req.user.id;
 
-  // Check if meal belongs to user (unless admin)
   const checkQuery = req.user.role === 'admin' 
     ? 'SELECT * FROM Meals WHERE id = ?'
     : 'SELECT * FROM Meals WHERE id = ? AND user_id = ?';
@@ -87,12 +81,10 @@ export const updateMeal = (req, res) => {
   });
 };
 
-// Delete meal
 export const deleteMeal = (req, res) => {
   const mealId = req.params.id;
   const userId = req.user.id;
 
-  // Check if meal belongs to user (unless admin)
   const checkQuery = req.user.role === 'admin' 
     ? 'SELECT * FROM Meals WHERE id = ?'
     : 'SELECT * FROM Meals WHERE id = ? AND user_id = ?';

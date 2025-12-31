@@ -1,7 +1,6 @@
 import db from '../config/db.js';
 import { authenticateToken, isAdmin } from '../middleware/auth.js';
 
-// Get all users (Admin only)
 export const getAllUsers = (req, res) => {
   db.query('SELECT id, name, email, role, created_at FROM Users', (err, results) => {
     if (err) return res.status(500).json({ error: 'Database error' });
@@ -9,7 +8,6 @@ export const getAllUsers = (req, res) => {
   });
 };
 
-// Get statistics (Admin only)
 export const getStatistics = (req, res) => {
   const queries = {
     users: 'SELECT COUNT(*) as count FROM Users',
@@ -37,7 +35,6 @@ export const getStatistics = (req, res) => {
   });
 };
 
-// Delete user (Admin only)
 export const deleteUser = (req, res) => {
   const { userId } = req.params;
 

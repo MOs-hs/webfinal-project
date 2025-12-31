@@ -2,16 +2,13 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import db from '../config/db.js';
 
-// Register new user
 export const signup = (req, res) => {
   const { name, email, password } = req.body;
 
-  // Simple validation
   if (!name || !email || !password) {
     return res.status(400).json({ error: 'All fields are required' });
   }
 
-  // Check if user already exists
   db.query('SELECT * FROM Users WHERE email = ?', [email], async (err, results) => {
     if (err) return res.status(500).json({ error: 'Database error' });
     
@@ -19,10 +16,8 @@ export const signup = (req, res) => {
       return res.status(400).json({ error: 'Email already registered' });
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Insert new user
     db.query(
       'INSERT INTO Users (name, email, password) VALUES (?, ?, ?)',
       [name, email, hashedPassword],
@@ -38,16 +33,13 @@ export const signup = (req, res) => {
   });
 };
 
-// Login user
 export const login = (req, res) => {
   const { email, password } = req.body;
 
-  // Simple validation
   if (!email || !password) {
     return res.status(400).json({ error: 'Email and password are required' });
   }
 
-  // Find user by email
   db.query('SELECT * FROM Users WHERE email = ?', [email], async (err, results) => {
     if (err) return res.status(500).json({ error: 'Database error' });
     
@@ -57,13 +49,11 @@ export const login = (req, res) => {
 
     const user = results[0];
 
-    // Check password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    // Create JWT token
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
       process.env.JWT_SECRET,
@@ -83,7 +73,6 @@ export const login = (req, res) => {
   });
 };
 
-// Get user profile
 export const getProfile = (req, res) => {
   const userId = req.user.id;
 
@@ -97,4 +86,3 @@ export const getProfile = (req, res) => {
     res.json(results[0]);
   });
 };
-

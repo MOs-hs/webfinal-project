@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// MySQL connection configuration
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -11,7 +10,6 @@ const db = mysql.createConnection({
   database: process.env.DB_NAME
 });
 
-// Test connection
 db.connect((err) => {
   if (err) {
     console.error('Database connection failed:', err.message);
